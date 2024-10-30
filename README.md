@@ -35,6 +35,8 @@ Once the Behavior is added to a table, every `find()` call to that table will in
 
 Direct your users to `\Cake\Routing\Router::url(['_name' => 'Multitenancy:ChooseAccount'])` where they can choose an existing accout or create a new one.
 
+Use `<?= $this->element('Multitenancy.account') ?>` in your view templates to display current account or link to the *Choose Account* page.
+
 ###### Setting an account
 
 If you wish to manually set a specific account to be used.
