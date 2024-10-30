@@ -1,0 +1,26 @@
+{
+  "name": "mehov/cakephp-multitenancy",
+  "description": "Extend cakedc/users with customer accounts and multitenancy",
+  "type": "cakephp-plugin",
+  "keywords": ["cakephp", "multitenancy", "saas"],
+  "require": {
+    "cakephp/cakephp": "^5.0",
+    "cakedc/users": "^14.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Multitenancy\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/mehov/cakephp-multitenancy/graphs/contributors"
+    }
+  ],
+  "homepage": "https://github.com/mehov/cakephp-multitenancy",
+  "support": {
+    "source": "https://github.com/mehov/cakephp-multitenancy",
+    "issues": "https://github.com/mehov/cakephp-multitenancy/issues"
+  }
+}
