@@ -42,6 +42,8 @@ Use `<?= $this->element('Multitenancy.account') ?>` in your view templates to di
 If you wish to manually set a specific account to be used.
 
 ```
+// Load the accounts table. If you're in a controller, use fetchTable()
+$accountsTable = $this->fetchTable('Multitenancy.Accounts');
 // Select the account
 $account = $accountsTable->find('all')
     ->leftJoinWith('Users')
