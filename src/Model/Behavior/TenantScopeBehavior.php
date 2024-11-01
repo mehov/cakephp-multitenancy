@@ -60,23 +60,6 @@ class TenantScopeBehavior extends Behavior
     private $account;
 
     /**
-     * @param array $config
-     * @throws \Exception
-     */
-    public function initialize(array $config): void
-    {
-        parent::initialize($config);
-        // See if we can automatically get an account to use
-        $account = $this->detectAccount();
-        if (empty($account)) {
-            // Can't proceed without knowing what account to filter entries for
-            throw new \Exception('Account required but not selected');
-        }
-        // Save a copy of the account locally
-        $this->account = $account;
-    }
-
-    /**
      * If this table `belongsTo` `Accounts`, there must be a foreign key
      *
      * @return string name of the column containing foreign key to an account
@@ -96,6 +79,15 @@ class TenantScopeBehavior extends Behavior
      */
     public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
     {
+        // Checking in initialize() prevents `removeBehavior('TenantScope')`
+        if (empty($this->account)) {
+            // See if we can automatically get an account to use
+            $this->account = $this->detectAccount(); // save a copy locally
+            if (empty($this->account)) {
+                // Can't proceed without knowing what account to check ownership for
+                throw new \Exception('Account required but not selected');
+            }
+        }
         $query->where([$this->getAccountForeignKeyName() => $this->account->id]);
         return $query;
     }

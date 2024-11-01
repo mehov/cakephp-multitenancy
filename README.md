@@ -59,3 +59,11 @@ $accountsTable->setAccessedNow($account);
 ###### Automatically picking up last used account (Default)
 
 See `\Multitenancy\Model\Behavior\TenantScopeBehavior::detectAccount()`
+
+##### Stopping the Behavior
+
+In some cases you would want to stop checking the ownership for records in a specific table, and just get all entries instead. To do that, simply remove the behavior from that table.
+
+```
+$this->Articles->removeBehavior('TenantScope');
+```
