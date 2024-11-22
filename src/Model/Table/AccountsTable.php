@@ -100,4 +100,23 @@ class AccountsTable extends Table
         return $this->save($account);
     }
 
+    /**
+     * Finder for accounts belonging to given user. Usage (e.g. in Controller):
+     *
+     * ```
+     * $identity = $this->getRequest()->getAttribute('identity');
+     * $accountsQuery = $this->Accounts->find('byIdentity', $identity);
+     * ```
+     *
+     * @param \Cake\ORM\Query\SelectQuery $selectQuery
+     * @param \Authorization\Identity $identity
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findByIdentity($selectQuery, $identity)
+    {
+        return $selectQuery->find('all')
+            ->leftJoinWith('Users')
+            ->where(['Users.id' => $identity->get('id')])
+        ;
+    }
 }

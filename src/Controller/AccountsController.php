@@ -58,9 +58,7 @@ class AccountsController extends PluginController
             throw new \Exception('No valid identity is available. Try to log in.');
         }
         // Find all accounts available to the current user
-        $accounts = $this->Accounts->find('all')
-            ->leftJoinWith('Users')
-            ->where(['Users.id' => $identity->get('id')])
+        $accounts = $this->Accounts->find('byIdentity', $identity)
             ->all()
             ->indexBy('id')
             ->toArray();
