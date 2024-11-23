@@ -114,7 +114,12 @@ class AccountsTable extends Table
      */
     public function findByIdentity($selectQuery, $identity)
     {
-        return $selectQuery->find('all')
+        $selectQuery = $selectQuery->find('all');
+        // When no valid identity passed, silently return nothing
+        if (!$identity) {
+            return $selectQuery->where(['1 = 0']);
+        }
+        return $selectQuery
             ->leftJoinWith('Users')
             ->where(['Users.id' => $identity->get('id')])
         ;
