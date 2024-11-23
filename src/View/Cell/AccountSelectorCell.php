@@ -28,8 +28,15 @@ class AccountSelectorCell extends \Cake\View\Cell
      * ```
      * echo $this->cell('Multitenancy.AccountSelector::formControl');
      * ```
+     *
+     * If using FormProtection, pass FormHelper instance to add controls to:
+     * ```
+     * $this->cell('Multitenancy.AccountSelector::formControl', [$this->Form]);
+     * ```
+     *
+     * @param \Cake\View\Helper\FormHelper|\BootstrapUI\View\Helper\FormHelper|null $Form
      */
-    public function formControl()
+    public function formControl($Form = null)
     {
         $accounts = $this->Accounts
             ->find('byIdentity', $this->user)
@@ -39,6 +46,7 @@ class AccountSelectorCell extends \Cake\View\Cell
         $this->set([
             'accounts' => $accounts,
             'account' => $this->account,
+            'Form' => $Form,
         ]);
     }
 
