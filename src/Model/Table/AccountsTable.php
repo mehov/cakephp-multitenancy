@@ -51,6 +51,7 @@ class AccountsTable extends Table
             'foreignKey' => 'account_id',
             'targetForeignKey' => 'user_id',
             'joinTable' => 'accounts_users',
+            'through' => 'Multitenancy.AccountsUsers',
             'className' => 'CakeDC/Users.Users',
         ]);
     }
