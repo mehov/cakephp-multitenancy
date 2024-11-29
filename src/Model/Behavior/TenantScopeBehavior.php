@@ -79,6 +79,15 @@ class TenantScopeBehavior extends Behavior
      */
     public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
     {
+        // Skip if this is \Cake\ORM\Table::exists() checking uniqueness
+        if (!$query->isHydrationEnabled()) {
+            $selectClause = $query->clause('select');
+            if (is_array($selectClause)
+            && isset($selectClause['existing'])
+            && $selectClause['existing'] === 1) {
+                return $query;
+            }
+        }
         // Checking in initialize() prevents `removeBehavior('TenantScope')`
         if (empty($this->account)) {
             // See if we can automatically get an account to use
