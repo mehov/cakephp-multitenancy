@@ -13,7 +13,7 @@ class AccountSelectorCell extends \Cake\View\Cell
     {
         parent::initialize();
         // Prefetch Accounts table
-        $this->Accounts = $this->fetchTable('Multitenancy.Accounts');
+        $this->Accounts = $this->fetchTable(\Multitenancy\Plugin::getPlugin().'.Accounts');
         // Shorthands
         $request = $this->request;
         $session = $request->getSession();

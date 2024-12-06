@@ -30,11 +30,8 @@ class TenantScopeBehavior extends Behavior
         if (!$user) {
             throw new \Exception('No user data is available. Try to log in.');
         }
-        // We need to know current plugin name. This seems to be the only way.
-        $className = $this->getConfig('className');
-        list($plugin,) = \Cake\Core\pluginSplit($className);
         // Get an instance of AccountsTable
-        $accountsTable = $this->fetchTable($plugin.'.Accounts');
+        $accountsTable = $this->fetchTable(\Multitenancy\Plugin::getPlugin().'.Accounts');
         // Find the last account accessed by the current user
         $account = $accountsTable->find('all')
             ->leftJoinWith('Users')

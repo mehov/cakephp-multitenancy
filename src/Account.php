@@ -6,14 +6,6 @@ class Account
 {
 
     /**
-     * @return string
-     */
-    private static function getPlugin()
-    {
-        return __NAMESPACE__;
-    }
-
-    /**
      * @return \Cake\Http\Session
      */
     public static function getSession()
@@ -26,7 +18,7 @@ class Account
      */
     public static function getSessionKey()
     {
-        return sprintf('%s.%s', self::getPlugin(), 'Account');
+        return sprintf('%s.%s', Plugin::getPlugin(), 'Account');
     }
 
     /**
