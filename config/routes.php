@@ -3,7 +3,7 @@
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\Route\InflectedRoute;
 
-$routes->plugin($this->getName(), ['path' => '/multitenancy','_namePrefix' => 'Multitenancy:'], function ($routes) {
+$routes->plugin($this->getName(), ['path' => '/multitenancy','_namePrefix' => $this->getName().':'], function ($routes) {
     $routes->connect(
         '/',
         [
