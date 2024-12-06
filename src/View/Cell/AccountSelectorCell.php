@@ -19,7 +19,7 @@ class AccountSelectorCell extends \Cake\View\Cell
         $session = $request->getSession();
         // Make current user and account available to other methods
         $this->user = $session->read('Auth');
-        $this->account = $session->read('Multitenancy.Account');
+        $this->account = $session->read(\Multitenancy\Account::getSessionKey());
     }
 
 

@@ -24,7 +24,7 @@ class Account
     /**
      * @return string
      */
-    private static function getSessionKey()
+    public static function getSessionKey()
     {
         return sprintf('%s.%s', self::getPlugin(), 'Account');
     }
