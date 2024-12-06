@@ -1,14 +1,14 @@
 <?php
 
-namespace Multitenancy\Controller;
+namespace Bakeoff\Multitenancy\Controller;
 
 class AccountsController extends PluginController
 {
 
     /**
-     * @var \Multitenancy\Model\Table\AccountsTable
+     * @var \Bakeoff\Multitenancy\Model\Table\AccountsTable
      */
-    protected \Multitenancy\Model\Table\AccountsTable $Accounts;
+    protected \Bakeoff\Multitenancy\Model\Table\AccountsTable $Accounts;
 
     public function initialize(): void
     {
@@ -71,7 +71,7 @@ class AccountsController extends PluginController
             // Update last accessed timestamp
             $this->Accounts->setAccessedNow($accounts[$id]);
             // Cache a copy to the session
-            \Multitenancy\Account::set($accounts[$id]);
+            \Bakeoff\Multitenancy\Account::set($accounts[$id]);
         }
         $this->set('accounts', $accounts);
     }

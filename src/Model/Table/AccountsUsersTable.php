@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Multitenancy\Model\Table;
+namespace Bakeoff\Multitenancy\Model\Table;
 
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -11,22 +11,22 @@ use Cake\Validation\Validator;
 /**
  * AccountsUsers Model
  *
- * @property \Multitenancy\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- * @property \Multitenancy\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \Bakeoff\Multitenancy\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @property \Bakeoff\Multitenancy\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  *
- * @method \Multitenancy\Model\Entity\AccountsUser newEmptyEntity()
- * @method \Multitenancy\Model\Entity\AccountsUser newEntity(array $data, array $options = [])
- * @method array<\Multitenancy\Model\Entity\AccountsUser> newEntities(array $data, array $options = [])
- * @method \Multitenancy\Model\Entity\AccountsUser get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \Multitenancy\Model\Entity\AccountsUser findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method \Multitenancy\Model\Entity\AccountsUser patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\Multitenancy\Model\Entity\AccountsUser> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \Multitenancy\Model\Entity\AccountsUser|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \Multitenancy\Model\Entity\AccountsUser saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\AccountsUser>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\AccountsUser> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\AccountsUser>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\AccountsUser> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser newEmptyEntity()
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser newEntity(array $data, array $options = [])
+ * @method array<\Bakeoff\Multitenancy\Model\Entity\AccountsUser> newEntities(array $data, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\Bakeoff\Multitenancy\Model\Entity\AccountsUser> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\AccountsUser saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\AccountsUser> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\AccountsUser>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\AccountsUser> deleteManyOrFail(iterable $entities, array $options = [])
  */
 class AccountsUsersTable extends Table
 {
@@ -47,7 +47,7 @@ class AccountsUsersTable extends Table
         $this->belongsTo('Accounts', [
             'foreignKey' => 'account_id',
             'joinType' => 'INNER',
-            'className' => 'Multitenancy.Accounts',
+            'className' => 'Bakeoff/Multitenancy.Accounts',
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',

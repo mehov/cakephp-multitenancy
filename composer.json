@@ -1,5 +1,5 @@
 {
-  "name": "mehov/cakephp-multitenancy",
+  "name": "bakeoff/multitenancy",
   "description": "Extend cakedc/users with customer accounts and multitenancy",
   "type": "cakephp-plugin",
   "keywords": ["cakephp", "multitenancy", "saas"],
@@ -9,7 +9,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Multitenancy\\": "src"
+      "Bakeoff\\Multitenancy\\": "src"
     }
   },
   "authors": [

@@ -1,5 +1,5 @@
 <?php
-namespace Multitenancy\Model\Behavior;
+namespace Bakeoff\Multitenancy\Model\Behavior;
 
 use Cake\ORM\Behavior;
 
@@ -15,23 +15,23 @@ class TenantScopeBehavior extends Behavior
      * This Behavior depends on knowing for which account to find entries.
      * Account to use is normally cached; otherwise find the one used last.
      *
-     * @return \Multitenancy\Model\Entity\Account|null
+     * @return \Bakeoff\Multitenancy\Model\Entity\Account|null
      * @throws \Exception
      */
     private function detectAccount()
     {
         // Check the cache
-        $account = \Multitenancy\Account::get();
+        $account = \Bakeoff\Multitenancy\Account::get();
         if (!empty($account)) {
             return $account; // use the cached account
         }
         // Get CakeDC/User auth
-        $user = \Multitenancy\Account::getSession()->read('Auth');
+        $user = \Bakeoff\Multitenancy\Account::getSession()->read('Auth');
         if (!$user) {
             throw new \Exception('No user data is available. Try to log in.');
         }
         // Get an instance of AccountsTable
-        $accountsTable = $this->fetchTable(\Multitenancy\Plugin::getPlugin().'.Accounts');
+        $accountsTable = $this->fetchTable(\Bakeoff\Multitenancy\Plugin::getPlugin().'.Accounts');
         // Find the last account accessed by the current user
         $account = $accountsTable->find('all')
             ->leftJoinWith('Users')
@@ -45,7 +45,7 @@ class TenantScopeBehavior extends Behavior
         // Update last accessed timestamp
         $accountsTable->setAccessedNow($account);
         // Cache a copy of this account we just found to session
-        \Multitenancy\Account::set($account);
+        \Bakeoff\Multitenancy\Account::set($account);
         return $account;
     }
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Multitenancy\Model\Entity;
+namespace Bakeoff\Multitenancy\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property string $account_id
  * @property string $user_id
  *
- * @property \Multitenancy\Model\Entity\Account $account
- * @property \Multitenancy\Model\Entity\User $user
+ * @property \Bakeoff\Multitenancy\Model\Entity\Account $account
+ * @property \Bakeoff\Multitenancy\Model\Entity\User $user
  */
 class AccountsUser extends Entity
 {

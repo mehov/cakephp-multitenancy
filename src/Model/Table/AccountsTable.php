@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Multitenancy\Model\Table;
+namespace Bakeoff\Multitenancy\Model\Table;
 
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -13,19 +13,19 @@ use Cake\Validation\Validator;
  *
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsToMany $Users
  *
- * @method \Multitenancy\Model\Entity\Account newEmptyEntity()
- * @method \Multitenancy\Model\Entity\Account newEntity(array $data, array $options = [])
- * @method array<\Multitenancy\Model\Entity\Account> newEntities(array $data, array $options = [])
- * @method \Multitenancy\Model\Entity\Account get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \Multitenancy\Model\Entity\Account findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method \Multitenancy\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\Multitenancy\Model\Entity\Account> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \Multitenancy\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \Multitenancy\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\Account>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\Account> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\Account>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Multitenancy\Model\Entity\Account> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account newEmptyEntity()
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account newEntity(array $data, array $options = [])
+ * @method array<\Bakeoff\Multitenancy\Model\Entity\Account> newEntities(array $data, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\Bakeoff\Multitenancy\Model\Entity\Account> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \Bakeoff\Multitenancy\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\Account>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\Account> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\Account>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<\Bakeoff\Multitenancy\Model\Entity\Account>|\Cake\Datasource\ResultSetInterface<\Bakeoff\Multitenancy\Model\Entity\Account> deleteManyOrFail(iterable $entities, array $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -51,7 +51,7 @@ class AccountsTable extends Table
             'foreignKey' => 'account_id',
             'targetForeignKey' => 'user_id',
             'joinTable' => 'accounts_users',
-            'through' => 'Multitenancy.AccountsUsers',
+            'through' => 'Bakeoff/Multitenancy.AccountsUsers',
             'className' => 'CakeDC/Users.Users',
         ]);
     }

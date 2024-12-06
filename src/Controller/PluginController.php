@@ -1,6 +1,6 @@
 <?php
 
-namespace Multitenancy\Controller;
+namespace Bakeoff\Multitenancy\Controller;
 
 class PluginController extends \App\Controller\AppController
 {

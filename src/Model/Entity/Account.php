@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Multitenancy\Model\Entity;
+namespace Bakeoff\Multitenancy\Model\Entity;
 
 use Cake\ORM\Entity;
 
