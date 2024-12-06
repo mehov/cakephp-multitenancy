@@ -1,6 +1,6 @@
 <?php
 
-namespace Multitenancy\View\Helper;
+namespace Bakeoff\Multitenancy\View\Helper;
 
 class AccountHelper extends \Cake\View\Helper
 {
@@ -8,7 +8,7 @@ class AccountHelper extends \Cake\View\Helper
     public function getAccount()
     {
         $request = $this->getView()->getRequest();
-        return $request->getSession()->read(\Multitenancy\Account::getSessionKey());
+        return $request->getSession()->read(\Bakeoff\Multitenancy\Account::getSessionKey());
     }
 
 }

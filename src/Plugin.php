@@ -1,6 +1,6 @@
 <?php
 
-namespace Multitenancy;
+namespace Bakeoff\Multitenancy;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;

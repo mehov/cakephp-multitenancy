@@ -1,6 +1,6 @@
 <?php
 
-namespace Multitenancy;
+namespace Bakeoff\Multitenancy;
 
 class Account
 {
@@ -22,7 +22,7 @@ class Account
     }
 
     /**
-     * @param \Multitenancy\Model\Entity\Account $account
+     * @param \Bakeoff\Multitenancy\Model\Entity\Account $account
      */
     public static function set($account)
     {
@@ -30,7 +30,7 @@ class Account
     }
 
     /**
-     * @return \Multitenancy\Model\Entity\Account
+     * @return \Bakeoff\Multitenancy\Model\Entity\Account
      */
     public static function get()
     {
