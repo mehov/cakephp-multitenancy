@@ -21,7 +21,12 @@ class TenantScopeBehavior extends Behavior
      * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
-        // name of the column containing foreign key to an account
+        /*
+         * Reference to column containing account ID. May be in another table.
+         *
+         * - simple `account_id` = column in table this behavior is added to
+         * - dot notation `OtherTable.account` = column in associated table
+         */
         'accountField' => 'account_id',
     ];
 
@@ -73,18 +78,6 @@ class TenantScopeBehavior extends Behavior
     private $account;
 
     /**
-     * If this table `belongsTo` `Accounts`, there must be a foreign key
-     *
-     * @return string name of the column containing foreign key to an account
-     */
-    private function getAccountForeignKeyName()
-    {
-        if (!$this->_table->hasAssociation('Account')) {
-            return $this->_table->getAlias() . '.' . $this->getConfig('accountField');
-        }
-    }
-
-    /**
      * @param \Cake\Event\EventInterface $event
      * @param \Cake\ORM\Query\SelectQuery $query
      * @param \ArrayObject $options
@@ -127,7 +120,29 @@ class TenantScopeBehavior extends Behavior
                 throw new \Exception('Account required but not selected');
             }
         }
-        $query->where([$this->getAccountForeignKeyName() => $this->account->id]);
+        // Configured account field (can be single column name or dot notation)
+        $accountField = $this->getConfig('accountField');
+        // Dot notation means deep association as SomeTable.OtherTable.column
+        if (strpos($accountField, '.') !== false) {
+            // Split dot notation into parts
+            $parts = explode('.', $accountField);
+            // Take out column name. Shortened $parts is now table(s) only
+            $column = array_pop($parts);
+            // Last part is final table in association; that's where $column is
+            $table = end($parts);
+            // In where() below we will need to refer to OtherTable.column
+            $accountField = $table . '.' . $column;
+            unset($table, $column); // clean up
+            // Refer to whole association in dot notation to contain() it all
+            $contain = implode('.', $parts);
+            $query->contain($contain);
+        // No dot notation means accountField is single column in current table
+        } else {
+            // Prepend current table alias
+            $accountField = $this->_table->getAlias() . '.' . $accountField;
+        }
+        // Filter records that are being selected by current account ID
+        $query->where([$accountField => $this->account->id]);
         return $query;
     }
 
