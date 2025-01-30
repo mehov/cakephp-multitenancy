@@ -38,6 +38,19 @@ $this->addBehavior('Bakeoff/Multitenancy.TenantScope', [
 ]);
 ```
 
+If you need to check against a column in another table, write it in [dot notation](https://book.cakephp.org/5/en/appendices/glossary.html#term-dot-notation). The current table where TenantScope is added must be associated with the other table, either directly or through intermediary tables.
+
+For example, Articles (referred to as `$this` below) `belongsTo` Categories `belongsTo` Users, and we're checking against the column `linked_account` in Users:
+
+```
+// in ArticlesTable.php
+$this->addBehavior('Bakeoff/Multitenancy.TenantScope', [
+    'accountField' => 'Categories.Users.linked_account'
+]);
+```
+
+The above will `contain()` both Categories and Users before adding `where()` as described previously.
+
 ##### User interface
 Once the Behavior is added to a table, every `find()` call to that table will include a condition for `accountField`. The account it will be looking for needs to be in a user session: either set directly by user, or automatically by just looking up the last accessed account for that user.
 
