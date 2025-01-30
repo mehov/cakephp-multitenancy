@@ -85,7 +85,12 @@ class TenantScopeBehavior extends Behavior
                 return $query;
             }
         }
-        // Checking in initialize() prevents `removeBehavior('TenantScope')`
+        /*
+         * Make sure we know what account to check ownership for
+         *
+         * Makes sense to check this inside TenantScopeBehavior::initialize(),
+         * but that will prevent `removeBehavior('TenantScope')` if ever needed
+         */
         if (empty($this->account)) {
             // See if we can automatically get an account to use
             $this->account = $this->detectAccount(); // save a copy locally
