@@ -10,6 +10,22 @@ class TenantScopeBehavior extends Behavior
     use \Cake\ORM\Locator\LocatorAwareTrait;
 
     /**
+     * Default configuration. Overwrite when adding behavior to model, e.g.:
+     *
+     * ```
+     * $this->addBehavior('Bakeoff/Multitenancy.TenantScope', [
+     *     'accountField' => 'example_column_account_id'
+     * ]);
+     * ```
+     *
+     * @var array<string, mixed>
+     */
+    protected array $_defaultConfig = [
+        // name of the column containing foreign key to an account
+        'accountField' => 'account_id',
+    ];
+
+    /**
      * Guesses which account to use if none was selected specifically
      *
      * This Behavior depends on knowing for which account to find entries.
@@ -64,7 +80,7 @@ class TenantScopeBehavior extends Behavior
     private function getAccountForeignKeyName()
     {
         if (!$this->_table->hasAssociation('Account')) {
-            return $this->_table->getAlias().'.account_id';
+            return $this->_table->getAlias() . '.' . $this->getConfig('accountField');
         }
     }
 
