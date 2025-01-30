@@ -133,16 +133,19 @@ class TenantScopeBehavior extends Behavior
             // In where() below we will need to refer to OtherTable.column
             $accountField = $table . '.' . $column;
             unset($table, $column); // clean up
-            // Refer to whole association in dot notation to contain() it all
-            $contain = implode('.', $parts);
-            $query->contain($contain);
+            // Refer to whole association in dot notation
+            $assoc = implode('.', $parts);
+            // Filter records that are being selected by current account ID
+            $query->matching($assoc, function($q) use($accountField) {
+                return $q->where([$accountField => $this->account->id]);
+            });
         // No dot notation means accountField is single column in current table
         } else {
             // Prepend current table alias
             $accountField = $this->_table->getAlias() . '.' . $accountField;
+            // Filter records that are being selected by current account ID
+            $query->where([$accountField => $this->account->id]);
         }
-        // Filter records that are being selected by current account ID
-        $query->where([$accountField => $this->account->id]);
         return $query;
     }
 
