@@ -23,13 +23,20 @@ $this->addPlugin(\Bakeoff\Multitenancy\Plugin::class);
 ### Usage
 
 ##### Configuring tables
-Add this Behavior to the tables where records belong to an account. (Table needs to have a column for `account_id`.)
+Add this Behavior to the tables where records belong to an account.
 ```
 $this->addBehavior('Bakeoff/Multitenancy.TenantScope');
 ```
 
+By default, TenantScope expects account identifiers to be in a column named `account_id`. You can refer it to a custom column:
+```
+$this->addBehavior('Bakeoff/Multitenancy.TenantScope', [
+    'accountField' => 'example_column_account_id'
+]);
+```
+
 ##### User interface
-Once the Behavior is added to a table, every `find()` call to that table will include a condition for `account_id`. The account it will be looking for needs to be in a user session: either set directly by user, or automatically by just looking up the last accessed account for that user.
+Once the Behavior is added to a table, every `find()` call to that table will include a condition for `accountField`. The account it will be looking for needs to be in a user session: either set directly by user, or automatically by just looking up the last accessed account for that user.
 
 ###### Choosing an account
 
