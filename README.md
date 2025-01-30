@@ -23,15 +23,18 @@ $this->addPlugin(\Bakeoff\Multitenancy\Plugin::class);
 ### Usage
 
 ##### Configuring tables
-Add this Behavior to the tables where records belong to an account.
+Add the TenantScope Behavior to a table where records should belong to an account.
 ```
 $this->addBehavior('Bakeoff/Multitenancy.TenantScope');
 ```
 
-By default, TenantScope expects account identifiers to be in a column named `account_id`. You can refer it to a custom column:
+The above will ensure a `where()` condition is added to every `find()` call on that table, except e.g. [uniqueness checks](https://book.cakephp.org/5/en/orm/validation.html#creating-unique-field-rules) which use [`exists()`](https://api.cakephp.org/5.0/class-Cake.ORM.Table.html#exists()) internally.
+
+By default, TenantScope checks against a column named `account_id` expected in the same table the behavior is added to. If you want to use a different column, pass it as `accountField`.
+
 ```
 $this->addBehavior('Bakeoff/Multitenancy.TenantScope', [
-    'accountField' => 'example_column_account_id'
+    'accountField' => 'another_column_account_id'
 ]);
 ```
 
