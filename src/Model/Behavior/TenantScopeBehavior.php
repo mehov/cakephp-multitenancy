@@ -92,14 +92,16 @@ class TenantScopeBehavior extends Behavior
      */
     public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
     {
-        // Skip if this is \Cake\ORM\Table::exists() checking uniqueness
+        /*
+         * Skip if this is \Cake\ORM\Table::exists() checking uniqueness
+         * See: https://stackoverflow.com/a/74582840
+         */
         if (!$query->isHydrationEnabled()) {
-            $selectClause = $query->clause('select');
-            if (is_array($selectClause)
-            && isset($selectClause['existing'])
-            && $selectClause['existing'] === 1) {
+            $select = $query->clause('select');
+            if (is_array($select) && $select === ['existing' => 1]) {
                 return $query;
             }
+            unset($select);
         }
         /*
          * Make sure we know what account to check ownership for
