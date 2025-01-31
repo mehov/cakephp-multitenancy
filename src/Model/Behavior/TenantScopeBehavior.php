@@ -97,9 +97,9 @@ class TenantScopeBehavior extends Behavior
         }
         /*
          * Skip if this is \Cake\ORM\Table::exists() checking uniqueness
-         * See: https://stackoverflow.com/a/74582840
+         * See also: https://stackoverflow.com/a/74582840
          */
-        if (!$query->isHydrationEnabled()) {
+        if (!$query->isHydrationEnabled()) { // exists() disables hydration
             $select = $query->clause('select');
             if (is_array($select) && $select === ['existing' => 1]) {
                 return $query;
