@@ -78,6 +78,47 @@ class TenantScopeBehavior extends Behavior
     private $account;
 
     /**
+     * Parse accountField into pieces needed to refer to account ID in queries.
+     *
+     * Usage:
+     *
+     * ```
+     * list($column, $table, $associations) = $this->parseAccountField($field);
+     * ```
+     *
+     * Results for both $accountField as single column name and dot notation:
+     *
+     *                 | 'account_id'   | 'SomeTable.OtherTable.column'
+     * $column         | account_id     | column
+     * $table          | CurrentTable   | OtherTable
+     * $associations   | (null)         | SomeTable.OtherTable
+     *
+     * @param string $accountField see documentation for $_defaultConfig above
+     * @return array [$column, $table, $associations]
+     */
+    private function parseAccountField(string $accountField): array
+    {
+        /*
+         * No dot notation means accountField is single column in current table
+         */
+        if (strpos($accountField, '.') === false) {
+            return [$accountField, $this->_table->getAlias(), null];
+        }
+        /*
+         * Dot notation means deep association like SomeTable.OtherTable.column
+         */
+        // Split dot notation into parts
+        $parts = explode('.', $accountField);
+        // Take out column name. Shortened $parts is now table(s) only
+        $column = array_pop($parts);
+        // Last part is final table in association; that's where $column is
+        $table = end($parts);
+        // Refer to whole association in dot notation
+        $associations = implode('.', $parts);
+        return [$column, $table, $associations];
+    }
+
+    /**
      * @param \Cake\Event\EventInterface $event
      * @param \Cake\ORM\Query\SelectQuery $query
      * @param \ArrayObject $options
@@ -122,27 +163,20 @@ class TenantScopeBehavior extends Behavior
         }
         // Configured account field (can be single column name or dot notation)
         $accountField = $this->getConfig('accountField');
-        // Dot notation means deep association as SomeTable.OtherTable.column
-        if (strpos($accountField, '.') !== false) {
-            // Split dot notation into parts
-            $parts = explode('.', $accountField);
-            // Take out column name. Shortened $parts is now table(s) only
-            $column = array_pop($parts);
-            // Last part is final table in association; that's where $column is
-            $table = end($parts);
+        // Parse into column, table where account ID is stored; associated path
+        list($column, $table, $associations) = $this->parseAccountField($accountField);
+        // Use match() for associations, e.g. SomeTable.OtherTable.column
+        if (!empty($associations)) {
             // In where() below we will need to refer to OtherTable.column
             $accountField = $table . '.' . $column;
-            unset($table, $column); // clean up
-            // Refer to whole association in dot notation
-            $assoc = implode('.', $parts);
             // Filter records that are being selected by current account ID
-            $query->matching($assoc, function($q) use($accountField) {
+            $query->matching($associations, function($q) use($accountField) {
                 return $q->where([$accountField => $this->account->id]);
             });
-        // No dot notation means accountField is single column in current table
+        // No associations means column in this table, so use simple where()
         } else {
-            // Prepend current table alias
-            $accountField = $this->_table->getAlias() . '.' . $accountField;
+            // $table refers to current table; $column is where account ID is
+            $accountField = $table . '.' . $column;
             // Filter records that are being selected by current account ID
             $query->where([$accountField => $this->account->id]);
         }
