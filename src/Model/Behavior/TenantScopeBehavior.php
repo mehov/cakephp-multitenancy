@@ -28,6 +28,32 @@ class TenantScopeBehavior extends Behavior
          * - dot notation `OtherTable.account` = column in associated table
          */
         'accountField' => 'account_id',
+        /*
+         * If entities in current table have account ID column, or are directly
+         * associated to a table where account ID is, but on save it's empty,
+         * the account ID (or foreign key to it) can be set automatically.
+         *
+         * Works only if:
+         * - account ID is in current table and entity doesn't have it
+         * - account ID is in directly associated table and entity isn't linked
+         *   to a record in that table (i.e. doesn't have foreign ID set)
+         *
+         * Account ID is read from current session. (If empty, will skip.)
+         *
+         * Examples:
+         * - saving $user; account ID is Users.account
+         *   if $user->account not set, set it to account ID of current user
+         * - saving $order; Orders belongsTo Users; account ID is Users.account
+         *   if $order->user_id not set, find user by account and link user_id
+         *
+         * Helpful when Orders doesn't have a default value for user_id. Saving
+         * without explicitly providing user_id results in database error:
+         * > SQLSTATE[HY000]: General error: Field doesn't have a default value
+         *
+         * Note: will skip on deep associations e.g.:
+         * Orders belongsTo Customers belongsTo Users; account is Users.account
+         */
+        'autoLinkDirect' => false,
     ];
 
     /**
@@ -183,4 +209,60 @@ class TenantScopeBehavior extends Behavior
         return $query;
     }
 
+    /**
+     * @param \Cake\Event\EventInterface $event
+     * @param \Cake\Datasource\EntityInterface $entity
+     * @param \ArrayObject $options
+     */
+    public function beforeSave($event, $entity, $options)
+    {
+        // If this is not a primary save, return early
+        if (!isset($options['_primary']) || !$options['_primary']) {
+            return;
+        }
+        // Return early if configured NOT to auto link
+        if (!$this->getConfig('autoLinkDirect')) {
+            return;
+        }
+        // See if we know the account
+        if (empty($this->account)) {
+            // See if we can automatically get an account to use
+            $this->account = $this->detectAccount(); // save a copy locally
+            if (empty($this->account)) {
+                // Skip silently. Do not enforce anything
+                return;
+            }
+        }
+        // Configured account field (can be single column name or dot notation)
+        $accountField = $this->getConfig('accountField');
+        // Parse into column, table where account ID is stored, associated path
+        list($column, $table, $associations) = $this->parseAccountField($accountField);
+        // Finish and return early if account ID is stored in current table
+        if (empty($associations) && !empty($column)) {
+            $entity->{$column} = $this->account->id;
+            return;
+        }
+        // If accound ID is in direct association, find foreign ID
+        if (!empty($associations) && strpos($associations, '.') === false) {
+            // Get association details on table where account ID is stored
+            $association = $event->getSubject()->getAssociation($associations);
+            // Get an instance of said table
+            $associatedTable = $this->fetchTable($association->getClassName());
+            // Shorthand to primary key of said table
+            $primaryKey = $associatedTable->getPrimaryKey();
+            // Find entry in associated table belonging to current account
+            /*
+             * Assuming we have only one record in associated table, find it
+             * by current account ID. Condition will be added in beforeFind()
+             */
+            $entry = $associatedTable->find('all')
+                ->select($primaryKey)
+                ->first() // need only one entry
+                ;
+            // Field in entity being saved where associated ID goes
+            $foreignKey = $association->getForeignKey();
+            $entity->{$foreignKey} = $entry->get($primaryKey);
+            return;
+        }
+    }
 }
